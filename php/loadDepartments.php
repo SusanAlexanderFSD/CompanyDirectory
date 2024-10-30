@@ -1,5 +1,5 @@
 <?php
-// Set error reporting for debugging purposes
+// Set error reporting for debugging
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
@@ -28,12 +28,11 @@ if (mysqli_connect_errno()) {
     exit;
 }
 
-// Define SQL query
-$query = 'SELECT p.lastName, p.firstName, p.email, d.name AS department, l.name AS location
-          FROM personnel p
-          LEFT JOIN department d ON (d.departmentID = p.departmentID)
-          LEFT JOIN location l ON (l.locationID = d.locationID)
-          ORDER BY p.lastName, p.firstName, d.name, l.name';
+// Define SQL query to get department and location data
+$query = 'SELECT d.name AS department, l.name AS location
+          FROM department d
+          LEFT JOIN location l ON d.locationID = l.id
+          ORDER BY d.name, l.name';
 
 // Execute query
 $result = $conn->query($query);
@@ -46,7 +45,6 @@ if (!$result) {
     $output['data'] = [];
 
     mysqli_close($conn);
-
     echo json_encode($output);
     exit;
 }

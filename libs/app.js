@@ -15,8 +15,8 @@ function loadPersonnelData() {
                     let row = `
                         <tr>
                             <td class="align-middle text-nowrap">${person.firstName}, ${person.lastName}</td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">${person.department}</td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">${person.location}</td>
+                            <td class="align-middle text-nowrap d-none d-md-table-cell">${person.departmentID}</td>
+                            <td class="align-middle text-nowrap d-none d-md-table-cell">${person.locationID}</td>
                             <td class="align-middle text-nowrap d-none d-md-table-cell">${person.email}</td>
                             <td class="text-end text-nowrap">
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="${person.id}">
@@ -171,6 +171,49 @@ $(document).ready(function() {
     loadDepartmentsData();
     loadLocationsData();
 });
+
+
+// LOAD DEPARTMENT & LOCATION IN DROP DOWN MENUS 
+
+
+function loadDepartmentAndLocationOptions() {
+    $.ajax({
+        url: "php/loadDepartments.php",
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            try {
+                let departments = new Set();
+                let locations = new Set();
+
+                response.data.forEach(item => {
+                    if (item.department) departments.add(item.department);
+                    if (item.location) locations.add(item.location.trim());
+                });
+
+                // Populate department dropdown
+                let departmentSelect = $('#addDepartment');
+                departmentSelect.empty().append('<option value="">Select Department</option>');
+                Array.from(departments).forEach(dept => {
+                    departmentSelect.append(`<option value="${dept}">${dept}</option>`);
+                });
+
+                // Populate location dropdown
+                let locationSelect = $('#addLocation');  // Add the location dropdown in your modal form if not done yet
+                locationSelect.empty().append('<option value="">Select Location</option>');
+                Array.from(locations).forEach(loc => {
+                    locationSelect.append(`<option value="${loc}">${loc}</option>`);
+                });
+
+            } catch (e) {
+                console.error('Error parsing departments/locations:', e);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching departments/locations:', textStatus, errorThrown);
+        }
+    });
+}
 
 
 // SEARCH BAR FUNCTION

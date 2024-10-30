@@ -36,16 +36,16 @@ $query = '
         p.firstName, 
         p.lastName, 
         p.email, 
-        d.name as department, 
-        l.name as location 
+        d.name AS department, 
+        l.name AS location 
     FROM 
         personnel p 
     LEFT JOIN 
-        department d ON p.departmentID = d.departmentID   
+        department d ON p.departmentID = d.id
     LEFT JOIN 
-        location l ON d.locationID = l.locationID
+        location l ON d.locationID = l.id
     ORDER BY 
-        p.lastName, p.firstName, d.name, l.name';
+        p.lastName, p.firstName';
 
 $result = $conn->query($query);
 

@@ -3,7 +3,7 @@ $cd_host = "localhost";  // Your database server
 $cd_port = 3306;
 $cd_socket = "";
 
-$cd_dbname = "companydirectory";
+$cd_dbname = "company directory";
 $cd_user = "Susan";
 $cd_password = "M4s0ns4sh4";
 
