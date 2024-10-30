@@ -356,6 +356,7 @@ $("#addEmployeeForm").on("submit", function(e) {
 
 // Open Add Employee Modal
 $("#addBtn").click(function() {
+    loadDepartmentAndLocationOptions();
     $('#addEmployeeModal').modal('show');
 });
 
